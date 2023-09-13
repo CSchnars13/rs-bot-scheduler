@@ -1,7 +1,7 @@
 {
-  "name": "awwbot",
+  "name": "rs-bot-scheduler",
   "version": "1.0.0",
-  "description": "A simple discord bot that uses intents to post pictures from r/aww",
+  "description": "Discord bot which helps schedule boss events",
   "type": "module",
   "private": true,
   "main": "src/server.js",
