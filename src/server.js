@@ -8,7 +8,7 @@ import {
   InteractionType,
   verifyKey,
   MessageComponentTypes,
-  ButtonStyleTypes
+  ButtonStyleTypes,
 } from 'discord-interactions';
 import { TEST_COMMAND, SCHEDULE_BOSS_COMMAND } from './commands.js';
 
@@ -55,21 +55,22 @@ router.post('/', async (request, env) => {
   if (interaction.type === InteractionType.APPLICATION_COMMAND) {
     // Most user commands will come as `APPLICATION_COMMAND`.
     switch (interaction.data.name.toLowerCase()) {
-
       case TEST_COMMAND.name.toLowerCase(): {
-        console.log("TEST BEGIN", JSON.stringify(interaction));
+        console.log('TEST BEGIN', JSON.stringify(interaction));
         return new JsonResponse({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: 'hello world ' + getRandomEmoji()
+            content: 'hello world ' + getRandomEmoji(),
           },
         });
       }
 
       case SCHEDULE_BOSS_COMMAND.name.toLowerCase(): {
-        console.log("SCHEDULE BEGIN", JSON.stringify(interaction));
+        console.log('SCHEDULE BEGIN', JSON.stringify(interaction));
         const userName = interaction.member.nick;
-        const [bossName, date, time] = interaction.data.options.map(option => option.value);
+        const [bossName, date, time] = interaction.data.options.map(
+          (option) => option.value,
+        );
 
         return new JsonResponse({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -82,7 +83,7 @@ router.post('/', async (request, env) => {
                   {
                     type: MessageComponentTypes.BUTTON,
                     custom_id: 'yes_button',
-                    label: 'I\'m in!',
+                    label: "I'm in!",
                     style: ButtonStyleTypes.SUCCESS,
                   },
                   {
@@ -94,7 +95,7 @@ router.post('/', async (request, env) => {
                   {
                     type: MessageComponentTypes.BUTTON,
                     custom_id: 'no_button',
-                    label: 'I\'m out.',
+                    label: "I'm out.",
                     style: ButtonStyleTypes.DANGER,
                   },
                 ],
@@ -102,7 +103,7 @@ router.post('/', async (request, env) => {
             ],
           },
         });
-    }
+      }
 
       default:
         return new JsonResponse({ error: 'Unknown Type' }, { status: 400 });
@@ -110,7 +111,7 @@ router.post('/', async (request, env) => {
   }
 
   if (interaction.type === InteractionType.MESSAGE_COMPONENT) {
-    console.log("BUTTON BEGIN", JSON.stringify(interaction));
+    console.log('BUTTON BEGIN', JSON.stringify(interaction));
     const componentId = interaction.data.custom_id;
     const userId = interaction.member.user.id;
 
@@ -156,7 +157,22 @@ async function verifyDiscordRequest(request, env) {
 
 // Simple method that returns a random emoji from list
 export function getRandomEmoji() {
-  const emojiList = ['😭','😄','😌','🤓','😎','😤','🤖','😶‍🌫️','🌏','📸','💿','👋','🌊','✨'];
+  const emojiList = [
+    '😭',
+    '😄',
+    '😌',
+    '🤓',
+    '😎',
+    '😤',
+    '🤖',
+    '😶‍🌫️',
+    '🌏',
+    '📸',
+    '💿',
+    '👋',
+    '🌊',
+    '✨',
+  ];
   return emojiList[Math.floor(Math.random() * emojiList.length)];
 }
 

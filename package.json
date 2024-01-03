@@ -10,8 +10,8 @@
     "dev": "wrangler dev src/server.js",
     "ngrok": "ngrok http 8787",
     "test": "c8 mocha test",
-    "fix": "eslint --fix '**/*.js'",
-    "lint": "eslint '**/*.js'",
+    "fix": "eslint --fix \"**/*.js\"",
+    "lint": "eslint \"**/*.js\"",
     "register": "node src/register.js",
     "publish": "wrangler deploy"
   },
