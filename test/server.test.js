@@ -1,11 +1,7 @@
 import { expect } from 'chai';
 import { describe, it, beforeEach, afterEach } from 'mocha';
-import {
-  InteractionResponseType,
-  InteractionType,
-  InteractionResponseFlags,
-} from 'discord-interactions';
-import { AWW_COMMAND, INVITE_COMMAND } from '../src/commands.js';
+import { InteractionResponseType, InteractionType } from 'discord-interactions';
+import { SCHEDULE_BOSS_COMMAND } from '../src/commands.js';
 import sinon from 'sinon';
 import server from '../src/server.js';
 
@@ -58,11 +54,23 @@ describe('Server', () => {
       expect(body.type).to.equal(InteractionResponseType.PONG);
     });
 
-    it('should handle an AWW command interaction', async () => {
+    it('should handle an SCHEDULE_BOSS_COMMAND interaction', async () => {
       const interaction = {
         type: InteractionType.APPLICATION_COMMAND,
+        member: {
+          nick: 'test',
+        },
         data: {
-          name: AWW_COMMAND.name,
+          name: SCHEDULE_BOSS_COMMAND.name,
+          options: [
+            {
+              value: {
+                bossName: 'testBoss',
+                date: 'testDate',
+                time: 'testTime',
+              },
+            },
+          ],
         },
       };
 
@@ -83,39 +91,6 @@ describe('Server', () => {
       expect(body.type).to.equal(
         InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       );
-    });
-
-    it('should handle an invite command interaction', async () => {
-      const interaction = {
-        type: InteractionType.APPLICATION_COMMAND,
-        data: {
-          name: INVITE_COMMAND.name,
-        },
-      };
-
-      const request = {
-        method: 'POST',
-        url: new URL('/', 'http://discordo.example'),
-      };
-
-      const env = {
-        DISCORD_APPLICATION_ID: '123456789',
-      };
-
-      verifyDiscordRequestStub.resolves({
-        isValid: true,
-        interaction: interaction,
-      });
-
-      const response = await server.fetch(request, env);
-      const body = await response.json();
-      expect(body.type).to.equal(
-        InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-      );
-      expect(body.data.content).to.include(
-        'https://discord.com/oauth2/authorize?client_id=123456789&scope=applications.commands',
-      );
-      expect(body.data.flags).to.equal(InteractionResponseFlags.EPHEMERAL);
     });
 
     it('should handle an unknown command interaction', async () => {

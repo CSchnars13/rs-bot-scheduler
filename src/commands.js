@@ -18,20 +18,20 @@ export const SCHEDULE_BOSS_COMMAND = {
       name: 'boss',
       description: 'Boss name',
       required: true,
-      choices: bossChoices
+      choices: bossChoices,
     },
     {
       type: 3,
       name: 'date',
       description: 'Date to schedule the boss event',
-      required: true
+      required: true,
     },
     {
       type: 3,
       name: 'time',
       description: 'Time to schedule the boss event',
-      required: true
+      required: true,
     },
   ],
-  type: 1
+  type: 1,
 };
